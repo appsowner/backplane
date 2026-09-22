@@ -22,7 +22,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-backplane}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-backplane}" ]
       interval: 5s
       timeout: 3s
       retries: 5
@@ -110,7 +110,7 @@ services:
       # which would report healthy before `alembic upgrade head` finishes).
       # start_period is long because the very first boot builds from source
       # and then runs migrations before the port opens.
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/ready').read()"]
+      test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/ready').read()" ]
       interval: 10s
       timeout: 5s
       retries: 6
@@ -132,7 +132,7 @@ services:
       backend:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/"]
+      test: [ "CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/" ]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -164,3 +164,8 @@ volumes:
   postgres-data:
   backplane-storage:
   runner-repos:
+
+networks:
+  default:
+  external: true
+  name: dokploy-network
